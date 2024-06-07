@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import {
   getItems,
@@ -6,7 +6,7 @@ import {
   updateItem,
   deleteItem,
 } from "../services/localStorageService";
-
+import { Toast } from "primereact/toast";
 // Dinamik importlar: sunucuda yüklenmesini engellemek için false  değeri
 const Form = dynamic(() => import("../components/Form"), { ssr: false });
 const List = dynamic(() => import("../components/List"), { ssr: false });
@@ -29,10 +29,17 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [displayDialog, setDisplayDialog] = useState(false);
   const itemsPerPage = 5;
+  const toastRef = useRef(null);
 
   const handleSave = (item) => {
     saveItem(item);
     setItems(getItems());
+    setDisplayDialog(false);
+    toastRef.current.show({
+      severity: "success",
+      summary: "Success",
+      detail: `${item.name} added`,
+    });
   };
 
   const handleUpdate = (updatedItem) => {
@@ -72,8 +79,6 @@ const Home = () => {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
-
-  const totalPages = Math.ceil(sortedItems.length / itemsPerPage);
 
   const sortOptions = [
     { label: "Sort by", value: null },
@@ -133,6 +138,7 @@ const Home = () => {
           onPageChange={onPageChange}
         />
       </div>
+      <Toast ref={toastRef} />
     </div>
   );
 };
