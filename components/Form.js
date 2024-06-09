@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -11,7 +11,7 @@ const schema = yup.object().shape({
   url: yup.string().url("Invalid URL format").required("URL is required"),
 });
 
-const Form = ({ onSave }) => {
+const Form = ({ onSave, defaultValues }) => {
   const {
     register,
     handleSubmit,
@@ -24,14 +24,16 @@ const Form = ({ onSave }) => {
   const onSubmit = (data) => {
     const newItem = {
       ...data,
-      id: uuidv4(),
-      votes: 0,
+      id: defaultValues.id || uuidv4(),
+      votes: defaultValues.votes || 0,
       lastVoted: new Date().toISOString(),
     };
     onSave(newItem);
     reset();
   };
-
+  useEffect(() => {
+    reset(defaultValues);
+  }, [defaultValues]);
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div

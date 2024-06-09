@@ -87,14 +87,15 @@ h1 {
   color: white;
 }
 
-.item .delete-button {
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  visibility: hidden;
   position: absolute;
-  top: 10px;
   right: 10px;
-  display: none;
-  cursor: pointer;
+  top: 10px;
 }
 
-.item:hover .delete-button {
-  display: block;
+.item:hover .action-buttons {
+  visibility: visible;
 }

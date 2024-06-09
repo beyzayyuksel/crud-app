@@ -30,18 +30,29 @@ const Home = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [displayDialog, setDisplayDialog] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
+  const [editItem, setEditItem] = useState(null);
   const itemsPerPage = 5;
   const toastRef = useRef(null);
 
   const handleSave = (item) => {
-    saveItem(item);
-    setItems(getItems());
+    if (editItem) {
+      updateItem(item);
+      setItems(getItems());
+    } else {
+      saveItem(item);
+      setItems(getItems());
+    }
     setDisplayDialog(false);
+    setEditItem(null);
     toastRef.current.show({
       severity: "success",
       summary: "Success",
-      detail: `${item.name} added`,
+      detail: `${item.name} ${editItem ? "updated" : "added"}`,
     });
+  };
+  const handleEdit = (item) => {
+    setEditItem(item);
+    setDisplayDialog(true);
   };
 
   const handleUpdate = (updatedItem) => {
@@ -99,6 +110,7 @@ const Home = () => {
 
   const showDialog = () => {
     setDisplayDialog(true);
+    setEditItem(null);
   };
 
   const confirmDelete = (id, name) => {
@@ -128,10 +140,13 @@ const Home = () => {
           <Dialog
             visible={displayDialog}
             onHide={() => setDisplayDialog(false)}
-            header="Add New Link"
+            header={editItem ? "Edit Link" : "Add New Link"}
             style={{ width: "25vw" }}
           >
-            <Form onSave={handleSave} onUpdate={handleUpdate} />
+            <Form
+              onSave={handleSave}
+              defaultValues={editItem || { name: "", url: "" }}
+            />
           </Dialog>
         </div>
         <Dropdown
@@ -145,6 +160,7 @@ const Home = () => {
           items={paginatedItems}
           onVote={handleVote}
           onDelete={confirmDelete}
+          onEdit={handleEdit}
         />
       </div>
       <div>

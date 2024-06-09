@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
-const List = ({ items, onVote, onDelete }) => {
+const List = ({ items, onVote, onDelete, onEdit }) => {
   return (
     <div>
       {items.map((item) => (
@@ -39,11 +39,18 @@ const List = ({ items, onVote, onDelete }) => {
                 Down Vote
               </i>
             </div>
-            <i
-              onClick={() => onDelete(item.id, item.name)}
-              className="pi pi-trash delete-button"
-              title="Delete"
-            ></i>
+            <div className="action-buttons">
+              <i
+                onClick={() => onDelete(item.id, item.name)}
+                className="pi pi-trash delete-button"
+                title="Delete"
+              ></i>
+              <i
+                onClick={() => onEdit(item)}
+                className="pi pi pi-pencil"
+                title="Edit"
+              ></i>
+            </div>
           </div>
         </div>
       ))}
