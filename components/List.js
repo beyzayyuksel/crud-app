@@ -39,11 +39,11 @@ const List = ({ items, onVote, onDelete }) => {
                 Down Vote
               </i>
             </div>
-            <Button
-              icon="pi pi-trash"
-              className="p-button-rounded p-button-danger"
-              onClick={() => onDelete(item.id)}
-            />
+            <i
+              onClick={() => onDelete(item.id, item.name)}
+              className="pi pi-trash delete-button"
+              title="Delete"
+            ></i>
           </div>
         </div>
       ))}

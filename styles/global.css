@@ -24,12 +24,14 @@ h1 {
 
 .item {
   background-color: #fff;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  padding-bottom: 16px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: relative;
 }
 
 .item-right {
@@ -83,4 +85,16 @@ h1 {
 
 .submit-btn span {
   color: white;
+}
+
+.item .delete-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  cursor: pointer;
+}
+
+.item:hover .delete-button {
+  display: block;
 }

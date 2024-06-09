@@ -7,6 +7,7 @@ import {
   deleteItem,
 } from "../services/localStorageService";
 import { Toast } from "primereact/toast";
+import { ConfirmDialog, confirmDialog } from "primereact/confirmdialog";
 // Dinamik importlar: sunucuda yüklenmesini engellemek için false  değeri
 const Form = dynamic(() => import("../components/Form"), { ssr: false });
 const List = dynamic(() => import("../components/List"), { ssr: false });
@@ -28,6 +29,7 @@ const Home = () => {
   const [sortOrder, setSortOrder] = useState("null");
   const [currentPage, setCurrentPage] = useState(1);
   const [displayDialog, setDisplayDialog] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState(null);
   const itemsPerPage = 5;
   const toastRef = useRef(null);
 
@@ -47,9 +49,14 @@ const Home = () => {
     setItems(getItems());
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id, name) => {
     deleteItem(id);
     setItems(getItems());
+    toastRef.current.show({
+      severity: "success",
+      summary: "Deleted",
+      detail: `${name} removed`,
+    });
   };
 
   // items adında bir anahtar (key) ile updatedItems değeri localStorage'e kaydedildi
@@ -94,6 +101,16 @@ const Home = () => {
     setDisplayDialog(true);
   };
 
+  const confirmDelete = (id, name) => {
+    setSelectedItemId(id);
+    confirmDialog({
+      message: `Do you want to remove ${name}?`,
+      header: "Remove Link",
+      accept: () => handleDelete(id, name),
+      reject: () => setSelectedItemId(null),
+    });
+  };
+
   return (
     <div className="container">
       <div>
@@ -127,7 +144,7 @@ const Home = () => {
         <List
           items={paginatedItems}
           onVote={handleVote}
-          onDelete={handleDelete}
+          onDelete={confirmDelete}
         />
       </div>
       <div>
@@ -139,6 +156,7 @@ const Home = () => {
         />
       </div>
       <Toast ref={toastRef} />
+      <ConfirmDialog />
     </div>
   );
 };
