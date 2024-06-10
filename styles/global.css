@@ -67,7 +67,7 @@ h1 {
 
 .submitForm {
   display: flex;
-  padding: 16px 12px;
+  padding: 16px 24px 16px 12px;
   gap: 24px;
   margin-bottom: 24px;
   background-color: hsla(211.03, 15.51%, 63.33%, 0.4);

@@ -156,6 +156,7 @@ const Home = () => {
                 : "Add New Link"
             }
             style={{ width: "25vw" }}
+            breakpoints={{ "1024px": "50vw", "960px": "75vw", "641px": "97vw" }}
           >
             <Form
               onSave={handleSave}
@@ -164,13 +165,14 @@ const Home = () => {
             />
           </Dialog>
         </div>
-        <Dropdown
-          value={sortOrder}
-          options={sortOptions}
-          onChange={(e) => setSortOrder(e.value)}
-          placeholder="Sort by"
-        />
-
+        {items.length > 0 && (
+          <Dropdown
+            value={sortOrder}
+            options={sortOptions}
+            onChange={(e) => setSortOrder(e.value)}
+            placeholder="Sort by"
+          />
+        )}
         <List
           items={paginatedItems}
           onVote={handleVote}
@@ -180,12 +182,14 @@ const Home = () => {
         />
       </div>
       <div>
-        <Paginator
-          first={(currentPage - 1) * itemsPerPage}
-          rows={itemsPerPage}
-          totalRecords={sortedItems.length}
-          onPageChange={onPageChange}
-        />
+        {items.length > 0 && (
+          <Paginator
+            first={(currentPage - 1) * itemsPerPage}
+            rows={itemsPerPage}
+            totalRecords={sortedItems.length}
+            onPageChange={onPageChange}
+          />
+        )}
       </div>
       <Toast ref={toastRef} />
       <ConfirmDialog />
