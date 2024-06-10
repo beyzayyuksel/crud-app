@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
 
-const List = ({ items, onVote, onDelete, onEdit }) => {
+const List = ({ items, onVote, onDelete, onEdit, onRead }) => {
   return (
     <div>
       {items.map((item) => (
@@ -49,6 +49,11 @@ const List = ({ items, onVote, onDelete, onEdit }) => {
                 onClick={() => onEdit(item)}
                 className="pi pi pi-pencil"
                 title="Edit"
+              ></i>
+              <i
+                onClick={() => onRead(item)}
+                className="pi pi-eye"
+                title="Read"
               ></i>
             </div>
           </div>

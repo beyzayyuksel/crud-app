@@ -31,6 +31,7 @@ const Home = () => {
   const [displayDialog, setDisplayDialog] = useState(false);
   const [selectedItemId, setSelectedItemId] = useState(null);
   const [editItem, setEditItem] = useState(null);
+  const [isReadOnly, setIsReadOnly] = useState(false);
   const itemsPerPage = 5;
   const toastRef = useRef(null);
 
@@ -55,10 +56,10 @@ const Home = () => {
     setDisplayDialog(true);
   };
 
-  const handleUpdate = (updatedItem) => {
-    updateItem(updatedItem);
-    setItems(getItems());
-  };
+  // const handleUpdate = (updatedItem) => {
+  //   updateItem(updatedItem);
+  //   setItems(getItems());
+  // };
 
   const handleDelete = (id, name) => {
     deleteItem(id);
@@ -68,6 +69,12 @@ const Home = () => {
       summary: "Deleted",
       detail: `${name} removed`,
     });
+  };
+
+  const handleRead = (item) => {
+    setEditItem(item);
+    setIsReadOnly(true);
+    setDisplayDialog(true);
   };
 
   // items adında bir anahtar (key) ile updatedItems değeri localStorage'e kaydedildi
@@ -111,6 +118,7 @@ const Home = () => {
   const showDialog = () => {
     setDisplayDialog(true);
     setEditItem(null);
+    setIsReadOnly(false);
   };
 
   const confirmDelete = (id, name) => {
@@ -140,12 +148,19 @@ const Home = () => {
           <Dialog
             visible={displayDialog}
             onHide={() => setDisplayDialog(false)}
-            header={editItem ? "Edit Link" : "Add New Link"}
+            header={
+              editItem
+                ? isReadOnly
+                  ? "View Link"
+                  : "Edit Link"
+                : "Add New Link"
+            }
             style={{ width: "25vw" }}
           >
             <Form
               onSave={handleSave}
               defaultValues={editItem || { name: "", url: "" }}
+              isReadOnly={isReadOnly}
             />
           </Dialog>
         </div>
@@ -161,6 +176,7 @@ const Home = () => {
           onVote={handleVote}
           onDelete={confirmDelete}
           onEdit={handleEdit}
+          onRead={handleRead}
         />
       </div>
       <div>

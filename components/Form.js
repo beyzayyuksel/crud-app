@@ -11,7 +11,7 @@ const schema = yup.object().shape({
   url: yup.string().url("Invalid URL format").required("URL is required"),
 });
 
-const Form = ({ onSave, defaultValues }) => {
+const Form = ({ onSave, defaultValues, isReadOnly }) => {
   const {
     register,
     handleSubmit,
@@ -51,21 +51,23 @@ const Form = ({ onSave, defaultValues }) => {
           }}
         >
           <label>Name</label>
-          <InputText {...register("name")} />
+          <InputText {...register("name")} disabled={isReadOnly} />
           {errors.name && <p>{errors.name.message}</p>}
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           <label>URL</label>
-          <InputText {...register("url")} />
+          <InputText {...register("url")} disabled={isReadOnly} />
           {errors.url && <p>{errors.url.message}</p>}
         </div>
       </div>
-      <Button
-        type="submit"
-        style={{ margin: "24px 0", backgroundColor: "rgb(0 28 64)" }}
-      >
-        Save
-      </Button>
+      {!isReadOnly && (
+        <Button
+          type="submit"
+          style={{ margin: "24px 0", backgroundColor: "rgb(0 28 64)" }}
+        >
+          Save
+        </Button>
+      )}
     </form>
   );
 };

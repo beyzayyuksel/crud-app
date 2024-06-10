@@ -29,7 +29,6 @@ h1 {
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-around;
   align-items: center;
   position: relative;
 }
@@ -94,6 +93,7 @@ h1 {
   position: absolute;
   right: 10px;
   top: 10px;
+  cursor: pointer;
 }
 
 .item:hover .action-buttons {
